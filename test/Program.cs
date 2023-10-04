@@ -3,18 +3,15 @@ internal class Program
 {
     private static void Main(string[] args)
     {
-        RunTest();
+        RunTest();  //RunTest=>InputParametrii=>VerifInput->TipTest-if>TestA/TestB
       
         ConsoleKeyInfo cki;
         Console.TreatControlCAsInput = true;
-        Console.WriteLine("Apasa orice tasta pentru a repeta testul cu alti parametrii");
-        Console.WriteLine("Apasa ESCPAE ( ESC) pentru a inchide aplicatia \n");
-        cki = Console.ReadKey();
+        Console.WriteLine("Apasa ESCAPE ( ESC) pentru a inchide aplicatia \n");
+        cki = Console.ReadKey(true);
         while (cki.Key != ConsoleKey.Escape)
         {
-            Console.Clear();
-            RunTest();
-            Console.WriteLine("Apasa orice tasta pentru a repeta testul cu alti parametrii");
+            Console.WriteLine("\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
             Console.WriteLine("Apasa ESCAPE ( ESC) pentru a inchide aplicatia \n");
             cki = Console.ReadKey();
         }
@@ -23,10 +20,10 @@ internal class Program
            
     }
 
-    static (bool, string) VerifInput(string input,int tipInput)  //return un true daca e cf conditiilor, si apoi un string conditiile, sa stim afisa
+    static (bool, string) VerifInput(string input,int tipInput)  //return un true daca e cf conditiilor, si apoi un string conditiile, sa stim afisa ce conditii avem in caz ca userul greseste
     {
         string conditii = "doar litere, fara diacritice";
-
+        //tipInput =1 pt fraza, =2 pt cuvant
         if (tipInput == 1)
         {
             if (Regex.Matches(input, @"[a-zA-Z\s]").Count == input.Length)
@@ -51,7 +48,7 @@ internal class Program
         }
         
     }
-    public static (string, string) InputParametri()  //return (Item1 cuvant,Item2 fraza)
+    public static (string, string) InputParametri()  //return (Item1-fraza,Item2-cuvant)
     {
          string  fraza = "";
          string  cuvant = "";
@@ -62,7 +59,7 @@ internal class Program
             Console.WriteLine("Va rog introduceti o fraza care contine " + VerifInput(fraza,1).Item2 + " si care nu contine spatii!");
             fraza = Console.ReadLine();
         }
-
+        Console.WriteLine();
         Console.WriteLine("Introduce-ti cuvantul:");
         cuvant = Console.ReadLine();
         while (!VerifInput(cuvant,2).Item1)
@@ -71,10 +68,10 @@ internal class Program
             cuvant = Console.ReadLine();
         }
 
-        return (cuvant.ToUpper(), fraza.ToUpper());
+        return (fraza.ToUpper(), cuvant.ToUpper());
     }
 
-    public static string TipTest()  //return ('a' sau 'b')
+    public static string TipTest()  //return ('a' sau 'b'), reprezentand tipul de test
     {
         string TipTest(string tipTest) => Regex.Match(tipTest, "[abAB]").Success==true ? tipTest:"error"  ;
         string tipTest;
@@ -83,14 +80,14 @@ internal class Program
         Console.ForegroundColor = ConsoleColor.Red;
         Console.WriteLine("Exemplu:");
         Console.ResetColor();
-        Console.WriteLine("\t" + @"pentru fraza: ”Programarea este interesanta.” și cuvantul ”pei”");
+        Console.WriteLine("\t" + @"pentru fraza: ”Programarea este interesanta.” si cuvantul ”pei”");
         Console.WriteLine("\t" + @"rezultatul este da (”pei” este format din prima litera a fiecarui cuvant din fraza)");
 
-        Console.WriteLine("a) Determina daca cuvantul dat se poate forma luand inceputul (una, doua sau trei litere) de la fiecare cuvant din fraza in ordine");
+        Console.WriteLine("b) Determina daca cuvantul dat se poate forma luand inceputul (una, doua sau trei litere) de la fiecare cuvant din fraza in ordine");
         Console.ForegroundColor = ConsoleColor.Red;
         Console.WriteLine("Exemplu:");
         Console.ResetColor();
-        Console.WriteLine("\t" + @" pentru fraza: ”Cocosul cantă cucurigu dimineata.” și cuvântul ”coccudim”");
+        Console.WriteLine("\t" + @" pentru fraza: ”Cocosul canta cucurigu dimineata.” si cuvântul ”coccudim”");
         Console.WriteLine("\t" + @" raspunsul este da ( [CO]cosul [C]anta [CU]curigu [DIM]ineata)" + "\n");
         Console.WriteLine("\nIntroduceti litera aferenta tipului de test: ");
         tipTest=Console.ReadLine();
@@ -109,41 +106,41 @@ internal class Program
     public static string TestA ((string, string) parametrii)  //return string mesaj pozitiv sau negativ al testului
     {
         int contorCuvant = 0;
-        string[] fraza = parametrii.Item2.Split(' ');
-        for (int i = 0; i < parametrii.Item1.Length; i++)
+        string[] fraza = parametrii.Item1.Split(' ');
+        for (int i = 0; i < parametrii.Item2.Length; i++)
         {
-            if (parametrii.Item1[i] == fraza[i][0])
+            if (parametrii.Item2[i] == fraza[i][0])
             {
                 contorCuvant++;
             } ;
         }
-        if (contorCuvant== parametrii.Item1.Length) 
+        if (contorCuvant== parametrii.Item2.Length) 
         {
-            return "DA";
+            return "Rezultat pozitiv pentru parametrii introdusi in testul A";
         }
         else
         {
-            return "NU";
+            return "Rezultat negativ pentru parametrii introdusi in testul A";
         }
         
     }
 
     public static string TestB((string, string) parametrii)  //return string mesaj pozitiv sau negativ al testului
     {
-        string[] fraza = parametrii.Item2.Split(' ');
+        string[] fraza = parametrii.Item1.Split(' ');
         int esteCorect = 1;
         int i = 0;
         int nrCuvantDinFraza = 0;
         int nrLiteraDinCuvantFraza = 0;
         int ultimulCuvantBun = -1;
-        while (esteCorect==1 && i< parametrii.Item1.Length)
+        while (esteCorect==1 && i< parametrii.Item2.Length)
         {
             if (nrLiteraDinCuvantFraza == 3)
             {
                 nrLiteraDinCuvantFraza = 0;
             }
 
-            if (parametrii.Item1[i] == fraza[nrCuvantDinFraza][nrLiteraDinCuvantFraza])
+            if (parametrii.Item2[i] == fraza[nrCuvantDinFraza][nrLiteraDinCuvantFraza])
             {
                 nrLiteraDinCuvantFraza++;
             }
@@ -165,15 +162,15 @@ internal class Program
 
         if (esteCorect == 1)
         {
-            return "DA";
+            return "Rezultat pozitiv pentru parametrii introdusi in testul B";
         }
         else
         {
-            return "NU";
+            return "Rezultat negativ pentru parametrii introdusi in testul B";
         }
     }
 
-    public static void RunTest()
+    public static void RunTest()  //cere tipul de test, apoi afiseaza rezultatele acestuia
     {
         (string, string) parametrii = InputParametri();
         if (TipTest() == "a")
