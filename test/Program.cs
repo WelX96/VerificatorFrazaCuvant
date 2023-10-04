@@ -1,6 +1,8 @@
-﻿using System.Text.RegularExpressions;
+﻿using System.ComponentModel;
+using System.Text.RegularExpressions;
 internal class Program
 {
+
     private static void Main(string[] args)
     {
         RunTest();  //RunTest=>InputParametrii=>VerifInput->TipTest-if>TestA/TestB
@@ -105,16 +107,14 @@ internal class Program
 
     public static string TestA ((string, string) parametrii)  //return string mesaj pozitiv sau negativ al testului
     {
-        int contorCuvant = 0;
-        string[] fraza = parametrii.Item1.Split(' ');
-        for (int i = 0; i < parametrii.Item2.Length; i++)
+        string cuvantDinFraze = "";
+        string[] fraze = parametrii.Item1.Split(' ');
+        string cuvant = parametrii.Item2;
+        foreach (string fraza in fraze)
         {
-            if (parametrii.Item2[i] == fraza[i][0])
-            {
-                contorCuvant++;
-            } ;
+            cuvantDinFraze = cuvantDinFraze + fraza[0];
         }
-        if (contorCuvant== parametrii.Item2.Length) 
+        if (cuvantDinFraze==cuvant) 
         {
             return "Rezultat pozitiv pentru parametrii introdusi in testul A";
         }
@@ -125,42 +125,72 @@ internal class Program
         
     }
 
-    public static string TestB((string, string) parametrii)  //return string mesaj pozitiv sau negativ al testului
-    {
-        string[] fraza = parametrii.Item1.Split(' ');
-        int esteCorect = 1;
-        int i = 0;
-        int nrCuvantDinFraza = 0;
-        int nrLiteraDinCuvantFraza = 0;
-        int ultimulCuvantBun = -1;
-        while (esteCorect==1 && i< parametrii.Item2.Length)
-        {
-            if (nrLiteraDinCuvantFraza == 3)
-            {
-                nrLiteraDinCuvantFraza = 0;
-            }
 
-            if (parametrii.Item2[i] == fraza[nrCuvantDinFraza][nrLiteraDinCuvantFraza])
-            {
-                nrLiteraDinCuvantFraza++;
-            }
-            else if (nrCuvantDinFraza == 0 || nrCuvantDinFraza==fraza.Length-1)
+    public static (int, string, string[],int,int,int) VP(int corect, string cuvant, string[] fraze, int i, int c, int l) //VP = Verifica Posibilitate
+    {
+        
+
+        switch(corect)
+        {
+            case 1: 
+                if (c == fraze.Length)
                 {
-                    esteCorect = 0;
+                    return (3, cuvant, fraze, i, c, l);
                 }
-            else if (ultimulCuvantBun==nrCuvantDinFraza)
+                else if (l == fraze[c].Length)
                 {
-                ultimulCuvantBun++;
-                nrLiteraDinCuvantFraza = 0;
+                    return (3, cuvant, fraze, i, c, l);
                 }
-            else
-            {
-                esteCorect = 0;
-            }
-            i++;
+                else {
+                    if (cuvant[i] == fraze[c][l])
+                    {
+                        if (i == cuvant.Length - 1 && c == fraze.Length - 1)
+                        {
+                            return (2, cuvant, fraze, i, c, l);
+                        }
+                        else 
+                        {
+                            if (VP(1, cuvant, fraze, i + 1, c, l + 1).Item1 == 2)
+                            {
+                                return (2, cuvant, fraze, i, c, l);
+                            }
+                            else if (VP(1,cuvant,fraze,i+1,c+1,0).Item1 == 2)
+                            {
+                                return (2, cuvant, fraze, i, c, l);
+                            }
+                            else
+                            {
+                                return (3, cuvant, fraze, i, c, l);
+                            }
+                        }
                     }
 
-        if (esteCorect == 1)
+                    else
+                    {
+                        return (3, cuvant, fraze, i, c, l);
+
+                    };
+                }
+            case 2:
+                return (2, cuvant, fraze, i, c, l);
+            case 3:
+                return (3, cuvant, fraze, i, c, l);
+            default:
+                return (3, cuvant, fraze, i, c, l);
+
+        }
+
+    }
+
+    public static string TestB((string, string) parametrii)  //return string mesaj pozitiv sau negativ al testului
+    {
+        string[] fraze = parametrii.Item1.Split(' ');
+        string cuvant = parametrii.Item2;     
+        int corect = 1; // 1 verifica ,2 final bun 3 final gresit
+        corect = VP(corect, cuvant, fraze, 0, 0, 0).Item1;
+
+
+        if (corect==2)
         {
             return "Rezultat pozitiv pentru parametrii introdusi in testul B";
         }
