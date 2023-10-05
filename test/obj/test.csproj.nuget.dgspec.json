@@ -1,18 +1,21 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Doru\\source\\repos\\test\\test\\test.csproj": {}
+    "C:\\Users\\Doru\\Source\\Repos\\VerificatorFrazaCuvant\\test\\test.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Doru\\source\\repos\\test\\test\\test.csproj": {
+    "C:\\Users\\Doru\\Source\\Repos\\VerificatorFrazaCuvant\\test\\test.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Doru\\source\\repos\\test\\test\\test.csproj",
+        "projectUniqueName": "C:\\Users\\Doru\\Source\\Repos\\VerificatorFrazaCuvant\\test\\test.csproj",
         "projectName": "test",
-        "projectPath": "C:\\Users\\Doru\\source\\repos\\test\\test\\test.csproj",
+        "projectPath": "C:\\Users\\Doru\\Source\\Repos\\VerificatorFrazaCuvant\\test\\test.csproj",
         "packagesPath": "C:\\Users\\Doru\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Doru\\source\\repos\\test\\test\\obj\\",
+        "outputPath": "C:\\Users\\Doru\\Source\\Repos\\VerificatorFrazaCuvant\\test\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+        ],
         "configFilePaths": [
           "C:\\Users\\Doru\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
@@ -55,7 +58,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.100\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.304\\RuntimeIdentifierGraph.json"
         }
       }
     }
