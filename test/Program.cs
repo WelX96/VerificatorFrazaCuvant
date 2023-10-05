@@ -3,9 +3,9 @@ internal class Program
 {
         private static void Main(string[] args)
     {
-        RunTest();  //RunTest=>InputParametrii=>VerifInput->TipTest-if>TestA/TestB
+        RunTest();  //RunTest=>InputParametrii=>VerifInput(if true)->TipTest (if ==a)->TestA else ->TestB =>print rez
       
-        ConsoleKeyInfo cki;
+        ConsoleKeyInfo cki;  //inchiderea aplicatiei prin apasare de buton(ESC), nu este necesara daca se intentioneaza o singura rulare
         Console.TreatControlCAsInput = true;
         Console.WriteLine("Apasa ESCAPE ( ESC) pentru a inchide aplicatia \n");
         cki = Console.ReadKey(true);
@@ -101,15 +101,29 @@ internal class Program
         }
         
 
-        return tipTest.ToLower();
+        return tipTest.ToLower(); //pentru a nu ne interesa case ul literei
 
     }
 
     public static string TestA ((string, string) parametrii)  //return string mesaj pozitiv sau negativ al testului
     {
-        string cuvantDinFraze = "";
+        string cuvantDinFraze = ""; 
+
+        bool doubleSpace = true; //mai jos verificam daca are spatii duble si le eliminam, ca split sa nu inregistreze string gol (pentru ca face cuvant din ce a gasit intre doua spatii , adica nimic)
+        while (doubleSpace == true)
+        {
+            if (parametrii.Item1.IndexOf("  ") == (-1))
+            {
+                doubleSpace = false;
+            }
+            else
+            {
+                parametrii.Item1.Remove(parametrii.Item1.IndexOf("  "), 1);
+            }
+        }
         string[] fraze = parametrii.Item1.Split(' ');
         string cuvant = parametrii.Item2;
+
         foreach (string fraza in fraze) //construim cuvantul rezultat din preluarea primei litere din fiecare cuvant din fraza
         {
             cuvantDinFraze += fraza[0];
@@ -126,7 +140,7 @@ internal class Program
     }
 
 
-    public static (int, string, string[],int,int,int) VP(int corect, string cuvant, string[] fraze, int i, int c, int l) //VP = Verifica Posibilitate
+    public static (int, string, string[],int,int,int) VP(int corect, string cuvant, string[] fraze, int i, int c, int l) //VP = Verifica Posibilitate ||
     {
         
 
@@ -184,12 +198,27 @@ internal class Program
 
     public static string TestB((string, string) parametrii)  //return string mesaj pozitiv sau negativ al testului
     {
+        bool doubleSpace = true; //mai jos verificam daca are spatii duble si le eliminam, ca split sa nu inregistreze string gol (pentru ca face cuvant din ce a gasit intre doua spatii , adica nimic)
+        while (doubleSpace == true)
+        {
+            if(parametrii.Item1.IndexOf("  ") == (-1))
+            {
+                doubleSpace = false;
+            }
+            else
+            {
+                parametrii.Item1.Remove(parametrii.Item1.IndexOf("  "), 1);
+            }
+        }
+
         string[] fraze = parametrii.Item1.Split(' ');//prelucram fraza intr-un string de cuvinte
-       
+             
         for (int i = 0; i < fraze.Length; i++)
         {
-            fraze[i] = fraze[i].Substring(0, 3);// preluam doar primele 3 litere ale cuvintelor, pentru ca doar acolo avem posibilitate, poate fi modificat daca se modifica problema
-        }                                       // *Nota: exista posibilitatea ca un cuvant sa fie sub 3 litere, insa posibila eroare este prinsa in VP, deoarece noi verificam indexul literei cu lungimea cuvantului din fraza
+            int indexMax(string fraza) => fraze[i].Length < 3 ? fraze[i].Length : 3;
+
+            fraze[i] = fraze[i].Substring(0, indexMax(fraze[i]));// preluam doar maxim primele 3 litere ale cuvintelor, pentru ca doar acolo avem posibilitate, poate fi modificat daca se modifica problema
+        }                                                       // *Nota: exista posibilitatea ca un cuvant sa fie sub 3 litere, insa posibila eroare este prinsa in VP, deoarece noi verificam indexul literei cu lungimea cuvantului din fraza
 
         string cuvant = parametrii.Item2;     
         int corect = 1; // 1 verifica ,2 final bun(doar la ultima litera din cuvantul dat) 3 final negativ ( de fiecare data cand nu gaseste egalitate pe pozitia posibila)
